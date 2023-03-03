@@ -45,7 +45,7 @@ const displayMeals = meals => {
 
 
 const loadDetail = id => {
-    console.log(id);
+    // console.log(id);
     const url = `https://openapi.programming-hero.com/api/ai/tool/0${id}`;
     fetch(url)
         .then(response => response.json())
@@ -57,10 +57,45 @@ const loadDetail = id => {
 
 
 const displayCardDetail = card => {
-    document.getElementById('cardDetail').innerText = card.description
-    document.getElementById('cardDetailBody').innerHTML = `
-        <img src = "${card.image_link[0]}" class="img-fluid"/>
+    const detailCardContainer = document.getElementById('detail-card-container')
+    detailCardContainer.innerHTML = ''
+    const detailCard = document.createElement('div')
+    detailCard.classList.add('col')
+
+    detailCard.innerHTML = `
+        <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">${card.description}</h5>
+            <p class="card-text">This is a longer card with supporting text below as a
+                natural lead-in to additional content. This content is a little bit longer.
+            </p>
+        </div>
+    </div>
+
     `
+    detailCardContainer.appendChild(detailCard)
+
+    const detailImage = document.createElement('div')
+    detailImage.classList.add('col');
+
+    detailImage.innerHTML = `
+        <div class="card">
+        <img src="${card.image_link[0]}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text">This is a longer card with supporting text below as a
+                natural lead-in to additional content. This content is a little bit longer.
+            </p>
+        </div>
+    </div>
+    `
+
+    detailCardContainer.appendChild(detailImage)
+
+    // document.getElementById('cardDetail').innerText = card.description
+    // document.getElementById('cardDetailBody').innerHTML = `
+        
+    // `
 }
 
 getData()
