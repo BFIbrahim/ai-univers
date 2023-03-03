@@ -1,4 +1,4 @@
-const loadMeals = () => {
+const getData = () => {
     const url = `https://openapi.programming-hero.com/api/ai/tools`
     fetch(url)
         .then(res => res.json())
@@ -7,8 +7,7 @@ const loadMeals = () => {
 
 const displayMeals = meals => {
     // console.log(meals);
-    const mealContaainer = document.getElementById('meals-container')
-    mealContaainer.innerHTML = ''
+    const mealContaainer = document.getElementById('card-container')
     meals.forEach(data => {
         // console.log(data);
         const mealDiv = document.createElement('div')
@@ -44,29 +43,27 @@ const displayMeals = meals => {
     })
 }
 
-const searchMeal = () => {
-    const searchText = document.getElementById('search-field').value
-    // console.log(searchText);
-    loadMeals(searchText)
-}
-
 
 const loadDetail = id => {
     console.log(id);
     const url = `https://openapi.programming-hero.com/api/ai/tool/0${id}`;
     fetch(url)
         .then(response => response.json())
-        .then(data => displayMealDetails(data.data))
+        .then(data => displayCardDetail(data.data))
         .catch(error => {
             console.log(error)
         })
 }
 
 
-const displayMealDetails = meal => {
-    console.log(meal);
-    document.getElementById('mealDetailLabel').innerText = meal.description
-    document.getElementById('mealDetailBody').innerHTML = `<img src = "${meal.image_link[0]}" class="img-fluid"/>`
+const displayCardDetail = card => {
+    document.getElementById('cardDetail').innerText = card.description
+    document.getElementById('cardDetailBody').innerHTML = `
+        <img src = "${card.image_link[0]}" class="img-fluid"/>
+    `
 }
 
-loadMeals()
+getData()
+
+
+{/* <img src = "${card.image_link[0]}" class="img-fluid"/> */}
