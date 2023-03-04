@@ -76,7 +76,6 @@ document.getElementById('shortbtn').addEventListener('click', function () {
     displayCards(sortData)
 })
 
-
 // ============== Load Card Detail ===============
 const loadDetail = id => {
     const url = `https://openapi.programming-hero.com/api/ai/tool/${'0' + id}`
