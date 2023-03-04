@@ -1,7 +1,7 @@
 // ====== Sort By Date Empty Array ====
 let sortData = []
 
-// ================ Load card ====================
+// ================ Load cards ====================
 const getData = (limit) => {
     const url = `https://openapi.programming-hero.com/api/ai/tools`
     fetch(url)
@@ -131,7 +131,6 @@ const displayCardDetail = card => {
 
         </div>
     </div>
-
     `
 
     detailCardContainer.appendChild(detailCard)
