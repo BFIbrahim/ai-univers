@@ -78,7 +78,7 @@ document.getElementById('shortbtn').addEventListener('click', function () {
 
 // ============== Load Card Detail ===============
 const loadDetail = id => {
-    const url = `https://openapi.programming-hero.com/api/ai/tool/${'0' + id}`
+    const url = `https://openapi.programming-hero.com/api/ai/tool/0${ + id}`
 
     fetch(url)
         .then(response => response.json())
