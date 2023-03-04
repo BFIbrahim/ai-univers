@@ -1,19 +1,33 @@
+
+let sortData = []
 const getData = () => {
     const url = `https://openapi.programming-hero.com/api/ai/tools`
     fetch(url)
         .then(res => res.json())
-        .then(data => displayMeals(data.data.tools))
+        .then(data => {  
+            // data.data.tools.sort((a, b) => new Date(a.published_in) - new Date(b.published_in));
+            // console.log(data);
+            
+            displayCards(data.data.tools)
+
+            sortData = data.data.tools.sort((a, b) => new Date(b.published_in) - new Date(a.published_in))
+            console.log(sortData)
+        })
 }
 
-const displayMeals = meals => {
-    // console.log(meals);
-    const mealContaainer = document.getElementById('card-container')
-    meals.forEach(data => {
-        // console.log(data);
-        const mealDiv = document.createElement('div')
-        mealDiv.classList.add('col')
 
-        mealDiv.innerHTML = `
+// displayCards(data.data.tools)
+
+const displayCards = cards => {
+
+    const cardContainer = document.getElementById('card-container')
+    cardContainer.innerHTML = ''
+    cards.forEach(data => {
+
+        const cardDiv = document.createElement('div')
+        cardDiv.classList.add('col')
+
+        cardDiv.innerHTML = `
         <div class="card h-100 p-3">
         <img src="${data.image}" class="card-img-top" alt="...">
         <div class="card-body">
@@ -23,13 +37,14 @@ const displayMeals = meals => {
               <li>${data.features[0] ? data.features[0] : 'No Features here'}</li>
               <li>${data.features[1] ? data.features[1] : 'No Features here'}</li>
               <li>${data.features[2] ? data.features[2] : 'No Features here'}</li>
+              <li>${data.features[3] ? data.features[3] : 'No Features here'}</li>
           </ol>
         </p>
         </div><hr>
 
         <div class = "d-flex justify-content-between align-items-center">
             <p>
-                <span><i class="fas fa-calendar-alt"></i> 11/01/2022</span>
+                <span class = "fw-medium"><i class="fas fa-calendar-alt"></i> ${data.published_in}</span>
             </p>
 
             <button class="btn" onclick = "loadDetail(${data.id})" type="button" data-bs-toggle="modal" data-bs-target="#mealDetail"><i class="fa-solid fa-arrow-right text-danger"></i></button>
@@ -38,15 +53,20 @@ const displayMeals = meals => {
 
       </div>
         `
+        cardContainer.appendChild(cardDiv)
 
-        mealContaainer.appendChild(mealDiv)
     })
 }
+
+document.getElementById('shortbtn').addEventListener('click', function(){
+    displayCards(sortData)
+})
 
 
 const loadDetail = id => {
     // console.log(id);
-    const url = `https://openapi.programming-hero.com/api/ai/tool/0${id}`;
+    const url = `https://openapi.programming-hero.com/api/ai/tool/${ '0' + id}`
+
     fetch(url)
         .then(response => response.json())
         .then(data => displayCardDetail(data.data))
