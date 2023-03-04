@@ -154,11 +154,9 @@ const displayCardDetail = card => {
 }
 
 
-// Get 
+// Get The Show All Button
 document.getElementById('show-all-btn').addEventListener('click', function(){
     getData() 
 })
-
-
 
 getData(6)
