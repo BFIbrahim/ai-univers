@@ -1,32 +1,42 @@
-
+// ====== Sort By Date Empty Array ====
 let sortData = []
-const getData = () => {
+
+// ================ Load card ====================
+const getData = (limit) => {
     const url = `https://openapi.programming-hero.com/api/ai/tools`
     fetch(url)
         .then(res => res.json())
-        .then(data => {  
-            // data.data.tools.sort((a, b) => new Date(a.published_in) - new Date(b.published_in));
-            // console.log(data);
-            
-            displayCards(data.data.tools)
+        .then(data => {
+            displayCards(data.data.tools, limit)
 
+            // Sort By Date Function
             sortData = data.data.tools.sort((a, b) => new Date(b.published_in) - new Date(a.published_in))
-            console.log(sortData)
         })
 }
 
 
-// displayCards(data.data.tools)
+//================== Display Cards ===================
+const displayCards = (cards, limit) => {
 
-const displayCards = cards => {
-
+    // get card Container
     const cardContainer = document.getElementById('card-container')
     cardContainer.innerHTML = ''
-    cards.forEach(data => {
 
+    const showAllCard = document.getElementById('show-all-cards')
+
+    if(limit && cards.length > 6){
+        cards = cards.slice(0, 6)
+        showAllCard.classList.remove('d-none')
+    }
+    else{
+        showAllCard.classList.add('d-none')
+    }
+
+    cards.forEach(data => {
         const cardDiv = document.createElement('div')
         cardDiv.classList.add('col')
-
+        
+        // Create Card
         cardDiv.innerHTML = `
         <div class="card h-100 p-3">
         <img src="${data.image}" class="card-img-top" alt="...">
@@ -47,25 +57,29 @@ const displayCards = cards => {
                 <span class = "fw-medium"><i class="fas fa-calendar-alt"></i> ${data.published_in}</span>
             </p>
 
-            <button class="btn" onclick = "loadDetail(${data.id})" type="button" data-bs-toggle="modal" data-bs-target="#mealDetail"><i class="fa-solid fa-arrow-right text-danger"></i></button>
+            <button class="btn" onclick = "loadDetail(${data.id})" type="button" data-bs-toggle="modal" data-bs-target="#cardDetail"><i class="fa-solid fa-arrow-right text-danger"></i></button>
         </div>
 
 
       </div>
         `
+
+        // Append Card to card container
         cardContainer.appendChild(cardDiv)
 
     })
 }
 
-document.getElementById('shortbtn').addEventListener('click', function(){
+// ============= Get Sorting Button ==============
+document.getElementById('shortbtn').addEventListener('click', function () {
+    // Display sorted card by date
     displayCards(sortData)
 })
 
 
+// ============== Load Card Detail ===============
 const loadDetail = id => {
-    // console.log(id);
-    const url = `https://openapi.programming-hero.com/api/ai/tool/${ '0' + id}`
+    const url = `https://openapi.programming-hero.com/api/ai/tool/${'0' + id}`
 
     fetch(url)
         .then(response => response.json())
@@ -76,12 +90,15 @@ const loadDetail = id => {
 }
 
 
+// ============== Display Card Dtail ===============
 const displayCardDetail = card => {
     const detailCardContainer = document.getElementById('detail-card-container')
     detailCardContainer.innerHTML = ''
+
     const detailCard = document.createElement('div')
     detailCard.classList.add('col')
 
+    // create Detail Card
     detailCard.innerHTML = `
         <div class="card bg-danger bg-opacity-10">
         <div class="card-body">
@@ -117,6 +134,7 @@ const displayCardDetail = card => {
     </div>
 
     `
+
     detailCardContainer.appendChild(detailCard)
 
     const detailImage = document.createElement('div')
@@ -136,7 +154,12 @@ const displayCardDetail = card => {
     detailCardContainer.appendChild(detailImage)
 }
 
-getData()
+
+// Get 
+document.getElementById('show-all-btn').addEventListener('click', function(){
+    getData() 
+})
 
 
-{/* <img src = "${card.image_link[0]}" class="img-fluid"/> */ }
+
+getData(6)
